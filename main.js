@@ -5,67 +5,89 @@ const character = {
     defaultHP: 100,
     damageHP: 90,
     elHP: document.getElementById('health-character'),
-    elProgressbar: document.getElementById('progressbar-character') 
-}
+    elProgressbar: document.getElementById('progressbar-character'),
+
+    renderHP: function () {
+        this.renderHPLife();
+        this.renderProgressbarHP();
+    },
+
+    renderHPLife: function (){
+        this.elHP.innerText = this.damageHP + '/' + this.defaultHP;
+    },
+
+    renderProgressbarHP: function (){
+        this.elProgressbar.style.width = this.damageHP + '%';
+    },
+
+    changeHP: function (count){
+        if (this.damageHP < count) {
+            this.damageHP = 0;
+            alert('Бідний ' + this.name + ' програв бій!');
+            $btn.disabled = true;
+            $btn2.disabled = true;
+        } else {
+            this.damageHP -= count;
+        }
+        this.renderHP();
+    }
+};
 
 const enemy = {
     name: 'Charmander',
     defaultHP: 100,
     damageHP: 100,
-    elHP: document.getElementById('health-enemy'),  
-    elProgressbar: document.getElementById('progressbar-enemy') 
-}
+    elHP: document.getElementById('health-enemy'),
+    elProgressbar: document.getElementById('progressbar-enemy'),
+
+    renderHP: function (){
+        this.renderHPLife();
+        this.renderProgressbarHP();
+    },
+
+    renderHPLife: function (){
+        this.elHP.innerText = this.damageHP + '/' + this.defaultHP;
+    },
+
+    renderProgressbarHP: function (){
+        this.elProgressbar.style.width = this.damageHP + '%';
+    },
+
+    changeHP: function (count){
+        if (this.damageHP < count) {
+            this.damageHP = 0;
+            alert('Бідний ' + this.name + ' програв бій!');
+			$btn.disabled = true;
+            $btn2.disabled = true;
+        } else {
+            this.damageHP -= count;
+        }
+        this.renderHP();
+    }
+	
+};
 
 $btn.addEventListener('click', function () {
     console.log('Kick');
+    character.changeHP(random(20));
 });
+
 
 $btn2.addEventListener('click', function () {
     console.log('Kick2');
+    enemy.changeHP(random(20));
 });
 
 function init() {
     console.log('Start Game!');
-    renderHP(character);
-    renderHP(enemy);
-}
-
-function renderHP(person){
-    renderHPLife(person);
-    renderProgressbarHP(person);
-}
-
-function renderHPLife(person) {
-    person.elHP.innerText = person.damageHP + '/' + person.defaultHP;
-}
-
-function renderProgressbarHP(person) {
-    person.elProgressbar.style.width = person.damageHP + '%';
-}
-
-function changeHP(count, person) {
-    if(person.damageHP < count) {
-        person.damageHP = 0;
-        alert('Бідний '+ person.name +' програв бій!');
-        $btn.disabled = true;
-    } else {
-        person.damageHP -= count;
-    }
-    renderHP(person);
+    character.renderHP();
+    enemy.renderHP();
 }
 
 function random(num){
     return Math.ceil(Math.random() * num);
 }
 
-$btn.addEventListener('click', function() {
-    changeHP(random(20), character);
-    changeHP(random(20), enemy);
-})
-
-$btn2.addEventListener('click', function() {
-    changeHP(random(25), enemy);
-})
 
 init();
 
