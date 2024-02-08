@@ -68,6 +68,38 @@ const enemy = {
 	
 };
 
+
+function clickCounter() {
+    let count = 0;
+
+    return function() {
+        count++;
+        console.log('Кількість натискань:', count);
+    };
+}
+
+const hClick = clickCounter();
+
+function limitClick(limit, $btn) {
+    let count = 0;
+
+    return function() {
+        if (count < limit) {
+            count++;
+            console.log('Кількість натискань:', count);
+            console.log('Залишилось натискань:', limit - count);
+            if (count === limit) {
+                $btn.disabled = true; 
+                console.log('Досягнута максимальна кількість!');
+            }
+        } 
+    };
+}
+
+const clickBtn1 = limitClick(6, $btn);
+const clickBtn2 = limitClick(6, $btn2);
+
+
 function generateLog(firstPerson, secondPerson) {
     const logs = [
         `${firstPerson.name} вспомнил что-то важное, но неожиданно ${secondPerson.name}, не помня себя от испуга, ударил в предплечье врага.`,
@@ -93,11 +125,15 @@ function changeHP(count, attacker, target) {
 
 $btn.addEventListener('click', function () {
     console.log('Kick');
+	hClick();
+	clickBtn1();
     changeHP(random(20), character, enemy);
 });
 
 $btn2.addEventListener('click', function () {
     console.log('Kick2');
+	hClick();
+	clickBtn2();
 	changeHP(random(20), enemy, character);
 });
 
